@@ -1,0 +1,225 @@
+/* Presentation motion. Product controls remain available without animation. */
+:root {
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --motion-duration: 760ms;
+}
+
+.topbar {
+  padding-block: 12px;
+}
+
+.nav-content {
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  transition: background 320ms, box-shadow 320ms, border-color 320ms;
+}
+
+.topbar.scrolled {
+  background: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+}
+
+.scrolled .nav-content {
+  background: var(--surface-glass);
+  border-color: var(--line);
+  box-shadow: 0 12px 40px var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.hero-content > * {
+  animation: hero-arrive var(--motion-duration) var(--motion-ease) both;
+}
+
+.hero-kicker {
+  align-self: flex-start;
+}
+
+.hero-content > :nth-child(2) { animation-delay: 90ms; }
+.hero-content > :nth-child(3) { animation-delay: 170ms; }
+.hero-content > :nth-child(4) { animation-delay: 250ms; }
+
+@keyframes hero-arrive {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.entered {
+  animation: section-arrive 850ms var(--motion-ease) var(--reveal-delay, 0ms) both;
+}
+
+@keyframes section-arrive {
+  from { opacity: .15; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.visual, .advisory-model {
+  border-radius: 26px;
+  box-shadow: 0 20px 65px var(--shadow);
+}
+
+.motion-workflow {
+  isolation: isolate;
+  animation: hero-arrive 1000ms var(--motion-ease) 180ms both;
+}
+
+.motion-workflow .visual-canvas {
+  height: clamp(340px, 31vw, 440px);
+  background:
+    radial-gradient(ellipse at 28% 80%, var(--lilac), transparent 70%),
+    radial-gradient(circle, var(--grid) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    var(--surface);
+}
+
+.motion-workflow .visual-node {
+  min-height: 59px;
+  padding: 10px 13px;
+  border-radius: 13px;
+  background: var(--surface);
+  box-shadow: 0 9px 24px var(--shadow);
+  animation: workflow-float 7s ease-in-out infinite;
+  animation-delay: calc(var(--node-index) * -1.15s);
+  animation-play-state: paused;
+  transition: background 650ms, border-color 650ms, box-shadow 650ms;
+}
+
+.motion-workflow[data-active="true"] .visual-node {
+  animation-play-state: running;
+}
+
+@keyframes workflow-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+
+.motion-workflow .visual-node.done {
+  background: var(--surface-soft);
+  border-color: var(--border-active);
+}
+
+.motion-workflow .visual-node.node-current {
+  background: var(--lilac);
+  box-shadow: 0 10px 28px var(--shadow), 0 0 0 3px var(--surface);
+}
+
+.motion-workflow .visual-node.node-current .visual-icon {
+  background: var(--accent);
+  color: white;
+}
+
+.motion-workflow .wires {
+  stroke: var(--border-active);
+  filter: none;
+}
+
+.motion-workflow .wire-lit {
+  stroke: var(--accent);
+}
+
+.motion-workflow .wire-lit,
+.motion-workflow .playing .wire-lit {
+  animation-play-state: paused;
+}
+
+.motion-workflow[data-active="true"][data-running="true"] .wire-lit {
+  animation-play-state: running;
+}
+
+.motion-process .advisory-map {
+  min-height: 350px;
+  padding: 32px 22px;
+  background:
+    radial-gradient(circle, var(--grid) 1px, transparent 1.5px) 0 0/18px 18px,
+    linear-gradient(135deg, #e2f6ee, #e7efff 54%, var(--lilac));
+}
+
+.motion-process .advisory-node {
+  border-radius: 13px;
+  min-height: 65px;
+  box-shadow: 0 8px 24px var(--shadow);
+  background: color-mix(in srgb, var(--tone-surface) 35%, white);
+  border-color: var(--tone-edge);
+  transform: translate(var(--fragment-x, 0px), var(--fragment-y, 0px)) rotate(var(--fragment-turn, 0deg));
+  transition:
+    transform 1100ms var(--motion-ease),
+    background 700ms,
+    border-color 700ms;
+  transition-delay: calc(var(--node-index) * 75ms);
+}
+
+.motion-process .advisory-node:nth-of-type(1) { --fragment-x: 7px; --fragment-y: -5px; --fragment-turn: -3deg; }
+.motion-process .advisory-node:nth-of-type(2) { --fragment-x: -4px; --fragment-y: 7px; --fragment-turn: 3deg; }
+.motion-process .advisory-node:nth-of-type(3) { --fragment-x: 4px; --fragment-y: -3px; --fragment-turn: 2deg; }
+.motion-process .advisory-node:nth-of-type(4) { --fragment-x: -3px; --fragment-y: 6px; --fragment-turn: -3deg; }
+.motion-process .advisory-node:nth-of-type(5) { --fragment-x: 6px; --fragment-y: 2px; --fragment-turn: -2deg; }
+.motion-process .advisory-node:nth-of-type(6) { --fragment-x: -7px; --fragment-y: -6px; --fragment-turn: 2deg; }
+
+.motion-process[data-stage="1"] .advisory-node {
+  transform: translate(0, var(--fragment-y, 0px)) rotate(0);
+}
+
+.motion-process .is-connected .advisory-node {
+  transform: translate(0, 0) rotate(0);
+  background: color-mix(in srgb, var(--tone-surface) 70%, white);
+  border-color: var(--tone-edge);
+}
+
+.motion-process .advisory-node span {
+  animation: label-arrive 450ms var(--motion-ease) both;
+}
+
+@keyframes label-arrive {
+  from { opacity: .15; translate: 0 5px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.motion-process .advisory-map-path {
+  stroke-dasharray: 1250;
+  stroke-dashoffset: 1250;
+}
+
+.motion-process .is-connected .advisory-map-path {
+  animation: process-connect 1700ms var(--motion-ease) both;
+  animation-play-state: paused;
+}
+
+.motion-process[data-active="true"] .is-connected .advisory-map-path {
+  animation-play-state: running;
+}
+
+@keyframes process-connect {
+  from { opacity: 0; stroke-dashoffset: 1250; }
+  to { opacity: 1; stroke-dashoffset: 0; }
+}
+
+.button > svg, .pillar > div > svg, .service-top > svg {
+  transition: translate 280ms var(--motion-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover > svg, .pillar:hover > div > svg, .service-card:hover .service-top > svg {
+    translate: 3px 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .nav-content { padding: 5px 0; border-radius: 16px; }
+  .scrolled .nav-content { padding-inline: 5px; }
+  .motion-workflow .visual-canvas { height: 330px; }
+  .motion-workflow .visual-node { padding: 8px; }
+  .motion-process .advisory-map { min-height: 305px; padding: 24px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .motion-workflow .visual-node, .motion-process .advisory-node {
+    transform: none !important;
+    translate: none !important;
+  }
+  .motion-process .is-connected .advisory-map-path { stroke-dashoffset: 0; }
+}

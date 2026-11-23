@@ -1,0 +1,5 @@
+.blen-loading{max-width:38rem;padding:5rem 0;display:grid;gap:1rem}
+.blen-loading span{display:block;height:2rem;border-radius:.5rem;background:var(--surface-soft);animation:blen-pulse 1.15s ease-in-out infinite alternate}
+.blen-loading span:last-child{width:65%;height:1rem}
+@keyframes blen-pulse{to{opacity:.48}}
+@media(prefers-reduced-motion:reduce){.blen-loading span{animation:none}}
